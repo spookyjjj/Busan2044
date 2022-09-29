@@ -1,0 +1,96 @@
+================세이브정보 담는 클래스 예시================
+import java.util.ArrayList;
+import java.util.List;
+
+public class SaveInfo {
+	private int hp;
+	private int mental;
+	private int party;
+	private List<Item> inventory = new ArrayList<>();
+	//item_id에 따라서 durability, count를 개별로 관리할 수 있게 정보 처리 -> 저장필요한 정보 inventory: list<Item>
+	private map<진행상황, 선택사항>
+	
+	public int getHp() {
+		return hp;
+	}
+	public int getMental() {
+		return mental;
+	}
+	public int getParty() {
+		return party;
+	}
+	public List<Item> getInventory() {
+		return inventory;
+	}
+	
+	
+}
+ SaveInfo user1 = new SaveInfo();
+
+===================ObjectOutputStream===========================
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
+public class Main5 {
+	public static void main(String[] args) {
+		ObjectOutputStream oos = null;
+		try {
+			oos = new ObjectOutputStream(new FileOutputStream(new File("d:\\filetest\\sl.ser")));
+			
+			oos.writeObject(new Student("학생1", 33, 3.0)); //NotSerializableException -> ★Student클래스를 직렬화 해줘야함
+			oos.flush();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (oos != null) {
+					oos.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}
+
+=========================ObjectInputStream============================
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
+public class Main6 {
+	public static void main(String[] args) {
+		ObjectInputStream ois = null;
+		try {
+			ois = new ObjectInputStream(new FileInputStream(new File("d:\\filetest\\sl.ser")));
+			
+			Student s = (Student) ois.readObject(); //기본적으로 Object로 읽어오니깐 다운캐스팅 필요~
+			
+			System.out.println(s);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (ois != null) {
+					ois.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+	}
+}
